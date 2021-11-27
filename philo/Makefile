@@ -6,7 +6,7 @@
 #    By: skoh <skoh@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/26 18:50:16 by skoh              #+#    #+#              #
-#    Updated: 2021/11/27 18:10:45 by skoh             ###   ########.fr        #
+#    Updated: 2021/11/27 18:49:22 by skoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,12 +41,14 @@ test: $(NAME)
 
 check:
 	@echo searching unordered lines && awk '{c=$$1; if(c<a)print NR,a,$$0; a=c}' log
-	@awk 'BEGIN{max=e=a=d=t=s=mean=0}{ \
+	@echo wc: `wc -l log`
+	@awk 'BEGIN{max=e=a=d=t=f=s=mean=0}{ \
 	if($$2>max){max=$$2} \
 	if($$3=="died"){++d} \
 	else if($$4=="eating"){e=e+1;if($$2=="1"){++a}} \
 	else if($$4=="sleeping"){++s} \
 	else if($$4=="thinking"){++t} \
-	} END{mean=e/max; \
-	print "thinks: "t"\neats found: " e " / " max " philos = " mean "\nsleeps: "s"\ndied found: " d}' log
+	else if($$4=="taken"){++f} \
+	} END{mean=e/max; total=t+f+e+s+d; \
+	print "total status: "total"\nthinks: "t"\nforks: "f"\neats found: " e " / " max " philos = " mean "\nsleeps: "s"\ndied found: " d}' log
 	@echo tail.. && tail log
